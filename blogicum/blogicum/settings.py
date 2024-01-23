@@ -2,21 +2,21 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-SECRET_KEY = 'django-insecure-g+cc$hq-4%%+41529wu4#g*_28+rys$xbqyt!xqe^t7l3hy%ky'
+SECRET_KEY = 'django-insecure-0%7^$_nl3s0gkm!7%26ts(ywd!g!a)17st0mrevd8%=sel1+wz'
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 INSTALLED_APPS = [
-    'blog.apps.BlogConfig',
-    'pages.apps.PagesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog.apps.BlogConfig',
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
@@ -51,15 +51,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blogicum.wsgi.application'
 
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -76,10 +73,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGE_CODE = 'ru-RU'
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -87,12 +83,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static_dev',
+    BASE_DIR / 'static',
 ]
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
