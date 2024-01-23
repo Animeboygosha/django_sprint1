@@ -1,7 +1,11 @@
-from django.shortcuts import render
-from django.http import Http404
+from typing import Union
 
-posts = [
+from django.http import Http404
+from django.shortcuts import render
+
+PostData = dict[str, Union[int, str]]
+
+posts: list[PostData] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -44,27 +48,29 @@ posts = [
     },
 ]
 
-post_id_detail = {}
-for post in posts:
-    post_id_detail[post['id']] = post
+
+posts_by_id: dict[Union[int, PostData], None] = {
+    post_id['id']: post_id for post_id in posts
+}
 
 
 def index(request):
-    template = 'blog/index.html'
-    context = {'post_list': posts}
-    return render(request, template, context)
+    context = {'blog': reversed(posts)}
+    return render(request, 'blog/index.html', context)
 
 
-def post_detail(request, post_id):
-    try:
-        context = {'post': post_id_detail[post_id]}
-    except KeyError:
-        raise Http404("Такой страницы не существует")
-    template = 'blog/detail.html'
-    return render(request, template, context)
+def post_detail(request, pk):
+    if pk not in posts_by_id:
+        raise Http404("Запрошенный id не найден")
+    post = posts_by_id[pk]
+    context = {
+        'post': post
+    }
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
-    template = 'blog/category.html'
-    context = {'category': category_slug}
-    return render(request, template, context)
+    context = {
+        'category_slug': category_slug
+    }
+    return render(request, 'blog/category.html', context)
