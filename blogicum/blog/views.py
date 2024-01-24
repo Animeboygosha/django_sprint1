@@ -1,7 +1,6 @@
-from django.http import HttpRequest, HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-posts: list[dict[str, any]] = [
+posts = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
