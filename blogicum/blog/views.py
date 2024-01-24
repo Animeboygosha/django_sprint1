@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse, Http404
+from django.shortcuts import render
 
-posts = [
+posts: list[dict[str, any]] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -44,23 +45,23 @@ posts = [
 ]
 
 
-def index(request):
-    template = 'blog/index.html'
-    context = {'posts': reversed(posts)}
-    return render(request, template, context)
+def index(request: HttpRequest) -> HttpResponse:
+    """Рендерит страницу index.html с постами в обратном порядке."""
+    return render(request, 'blog/index.html', {'posts': posts[::-1]})
 
 
-def post_detail(request, id):
-    try:
-        context = {'post': posts[id]}
-    except IndexError:
-        return redirect('blog:index')
-
-    template = 'blog/detail.html'
-    return render(request, template, context)
+post_ids: list[int] = {post['id'] for post in posts}
 
 
-def category_posts(request, category_slug):
-    template = 'blog/category.html'
-    context = {'category_slug': category_slug}
-    return render(request, template, context)
+def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
+    """Рендерит страницу detail.html с данными конкретного поста."""
+    if post_id not in post_ids:
+        raise Http404('Page not found (404). Пост не найден.')
+    return render(request, 'blog/detail.html', {'post': posts[post_id]})
+
+
+def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
+    """Рендерит страницу category.html с постами определённой категории."""
+    return render(
+        request, 'blog/category.html', {'category_slug': category_slug}
+    )
