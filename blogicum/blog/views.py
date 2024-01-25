@@ -50,7 +50,7 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, 'blog/index.html', {'posts': posts[::-1]})
 
 
-post_ids: list[int] = {post['id'] for post in posts}
+post_ids = {post['id'] for post in posts}
 
 
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
